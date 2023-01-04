@@ -42,3 +42,8 @@ func DeserializeBlock(blockBytes []byte) *Block {
 
 	return &block
 }
+
+func NewBlock(data string, height int64, preBlockHash []byte) *Block {
+
+	block := &Block{}
+}
