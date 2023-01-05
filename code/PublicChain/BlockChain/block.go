@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"log"
+	"time"
 )
 
 type Block struct {
@@ -45,5 +46,22 @@ func DeserializeBlock(blockBytes []byte) *Block {
 
 func NewBlock(data string, height int64, preBlockHash []byte) *Block {
 
-	block := &Block{}
+	block := &Block{height,
+		preBlockHash,
+		[]byte(data),
+		time.Now().Unix(),
+		nil,
+		0,
+	}
+
+	pow := NewProofOfWork(block)
+	hash, nonce := pow.Run()
+	block.Hash = hash[:]
+	block.Nonce = nonce
+
+	return block
+}
+
+func CreateInitBlock(data string) *Block {
+	return NewBlock(data, 1, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }

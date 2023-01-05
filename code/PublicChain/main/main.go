@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/big"
+)
 
 func main() {
-	fmt.Println("hello world!")
+
+	//BlockChain.CreateInitBlock("hello world")
+	target := big.NewInt(1)
+	newInt := big.NewInt(2)
+	fmt.Println(target.Cmp(newInt))
 }
