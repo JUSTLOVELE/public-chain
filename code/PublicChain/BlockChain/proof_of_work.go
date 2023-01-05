@@ -10,8 +10,10 @@ import (
 )
 
 // 0000 0000 0000 0000 1001 0001 0000 ....0001
+//64长度
+//001a 6c72 1bb2 a096 5058 1808 4803 8084 e417 71db 5975 6d2f a0ab aca0 4b3c ddd1
 //256位hash里面前面至少要有16个0
-const targetBit = 16
+const targetBit = 9
 
 type ProofOfWork struct {
 	Block  *Block
