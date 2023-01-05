@@ -10,10 +10,12 @@ import (
 )
 
 // 0000 0000 0000 0000 1001 0001 0000 ....0001
-//64长度
+//一个hash字符串有64长度
 //001a 6c72 1bb2 a096 5058 1808 4803 8084 e417 71db 5975 6d2f a0ab aca0 4b3c ddd1
-//256位hash里面前面至少要有16个0
-const targetBit = 9
+//hash有256位，所以1位字符串对应4位的长度, 64*4 = 256
+//所以targetBit：4是找1个0、8是2个0、12是3个0.....
+
+const targetBit = 20
 
 type ProofOfWork struct {
 	Block  *Block
