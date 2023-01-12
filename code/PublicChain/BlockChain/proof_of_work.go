@@ -15,7 +15,7 @@ import (
 //hash有256位，所以1位字符串对应4位的长度, 64*4 = 256
 //所以targetBit：4是找1个0、8是2个0、12是3个0.....
 
-const targetBit = 20
+const targetBit = 4
 
 type ProofOfWork struct {
 	Block  *Block
