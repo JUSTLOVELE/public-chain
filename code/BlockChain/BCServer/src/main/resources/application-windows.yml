@@ -1,0 +1,30 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个文件大小
+      max-request-size: 100MB #一次性上传文件大小总上限
+  application:
+    name: blockchain
+  mvc:
+    format:
+      date: yyyy-MM-dd
+
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /bcserver
+    session:
+      timneout: 3000
+
+logging:
+  path: C:\\logs\\
+  level:
+    root: info
+
+#mybatis-plus:
+#  type-enums-package: com.work.common.utils.enums
+
+projectconfig:
+  encryptKey: hykjhykjhykjhykjhykjhykj
