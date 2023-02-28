@@ -1,7 +1,9 @@
 package com.bc.server.backend.service.impl;
 
 import com.bc.server.Main;
-import com.bc.server.backend.service.block.BlockService;
+import com.bc.server.backend.service.api.BlockService;
+import com.bc.server.backend.service.block.Block;
+import com.bc.server.backend.service.block.BlockChain;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,15 @@ public class BlockServiceTest {
     @Autowired
     private BlockService _blockService;
 
+    @Autowired
+    private BlockChain _blockChain;
+
     @Test
     public void createGenesisBlockTest() {
 
-        _blockService.createGenesisBlock("hello world");
+        Block block1 = _blockService.createGenesisBlock("hello world");
+        Block block2 = _blockService.createAndAddBlock("block2", block1.getHash());
+        Block block3 = _blockService.createAndAddBlock("block2", block2.getHash());
+        System.out.println(_blockChain.toString());
     }
 }

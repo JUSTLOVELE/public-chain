@@ -1,7 +1,7 @@
 package com.bc.server.backend.service.proofofwork;
 
-import com.bc.server.backend.service.block.impl.Block;
-import com.bc.server.model.PowCompute;
+import com.bc.server.backend.service.block.Block;
+import com.bc.server.model.PowResult;
 import com.bc.server.utils.ByteUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -12,7 +12,7 @@ import java.math.BigInteger;
  */
 public class ProofOfWork {
 
-    private static final int targetBit = 4;
+    private static final int targetBit = 8;
 
     private BigInteger target;
 
@@ -25,7 +25,7 @@ public class ProofOfWork {
 
     private byte[] prepareData(long nonce) {
 
-        return ByteUtils.merge(block.getPreBlockHash(),
+        return ByteUtils.merge(block.getPreBlockHash().getBytes(),
                 block.getData(),
                 ByteUtils.toBytes(block.getTimestamp().getTime()),
                 ByteUtils.toBytes(targetBit),
@@ -39,7 +39,7 @@ public class ProofOfWork {
         return proofOfWork;
     }
 
-    public PowCompute run() {
+    public PowResult run() {
 
         long nonce = 0;
         String shaHex = "";
@@ -55,7 +55,8 @@ public class ProofOfWork {
                 nonce++;
             }
         }
-        return new PowCompute(nonce, shaHex);
+
+        return new PowResult(nonce, shaHex);
     }
 
     public BigInteger getTarget() {
