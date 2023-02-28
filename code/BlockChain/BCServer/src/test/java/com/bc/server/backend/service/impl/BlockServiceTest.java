@@ -4,6 +4,7 @@ import com.bc.server.Main;
 import com.bc.server.backend.service.api.BlockService;
 import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
+import com.bc.server.utils.ObjectToByteUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,14 @@ public class BlockServiceTest {
     private BlockChain _blockChain;
 
     @Test
-    public void createGenesisBlockTest() {
+    public void writeToDiskTest() {
+        Block block1 = _blockService.createGenesisBlock("hello world");
+        byte[] bytes = ObjectToByteUtils.toByteArray(block1);
+
+    }
+
+    @Test
+    public void blockTest() {
 
         Block block1 = _blockService.createGenesisBlock("hello world");
         Block block2 = _blockService.createAndAddBlock("block2", block1.getHash());
