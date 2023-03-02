@@ -39,7 +39,7 @@ public class ObjectToByteUtils {
      * @param bytes
      * @return
      */
-    public static Object byteToObject( byte[] bytes) {
+    public static Object byteToObject(byte[] bytes) {
 
         Object obj = null;
         try {

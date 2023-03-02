@@ -1,8 +1,11 @@
 package com.bc.server.backend.service.block;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Block {
+public class Block implements Serializable {
+
+    private static final long serialVersionUID = -2718643841231352368L;
 
     private int height;
 
@@ -15,6 +18,10 @@ public class Block {
     private String hash;
 
     private long nonce;
+
+    public Block() {
+
+    }
 
     public Block(int height, String preBlockHash, byte[] data, Date timestamp, String hash, long nonce) {
         this.height = height;

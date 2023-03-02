@@ -4,17 +4,20 @@ import com.bc.server.Main;
 import com.bc.server.backend.service.api.BlockService;
 import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
+import com.bc.server.utils.Constant;
 import com.bc.server.utils.ObjectToByteUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes ={Main.class, BlockServiceTest.class})
-
 public class BlockServiceTest {
 
     @Autowired
@@ -27,10 +30,16 @@ public class BlockServiceTest {
     private RedisTemplate redisTemplate;
 
     @Test
-    public void writeToDiskTest() {
-        Block block1 = _blockService.createGenesisBlock("hello world");
-        byte[] bytes = ObjectToByteUtils.toByteArray(block1);
+    public void runTest() throws IOException, ClassNotFoundException {
 
+        Block test = (Block) redisTemplate.opsForValue().get(Constant.Key.LAST);
+        System.out.println("");
+//        Object o = ObjectToByteUtils.byteToObject(test.getBytes());
+//
+//        if(o instanceof Block) {
+//            Block block = (Block) o;
+//            System.out.println(block.getHash());
+//        }
     }
 
     @Test
