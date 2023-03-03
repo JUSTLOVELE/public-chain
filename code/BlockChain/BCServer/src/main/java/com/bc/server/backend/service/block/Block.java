@@ -1,6 +1,9 @@
 package com.bc.server.backend.service.block;
 
+import com.bc.server.utils.ObjectToByteUtils;
+
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Block implements Serializable {
@@ -85,7 +88,10 @@ public class Block implements Serializable {
         return "Block{" +
                 "height=" + height +
                 ", preBlockHash='" + preBlockHash + '\'' +
+                ", Data=" + ObjectToByteUtils.byteToObject(getData()) +
+                ", timestamp=" + timestamp +
                 ", hash='" + hash + '\'' +
+                ", nonce=" + nonce +
                 '}';
     }
 }

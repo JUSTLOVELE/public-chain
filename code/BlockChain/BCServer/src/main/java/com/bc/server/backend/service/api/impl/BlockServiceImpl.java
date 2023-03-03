@@ -7,7 +7,6 @@ import com.bc.server.backend.service.proofofwork.ProofOfWork;
 import com.bc.server.model.PowResult;
 import com.bc.server.utils.Constant;
 import com.bc.server.utils.ObjectToByteUtils;
-import com.bc.server.utils.SerializeUtil;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,19 +39,20 @@ public class BlockServiceImpl implements BlockService {
     public Block createGenesisBlock(Object data) {
 
         byte[] preBlockHash = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        return createAndAddBlock(data, Hex.encodeHexString(preBlockHash));
+        return createAndAddBlock(data, Hex.encodeHexString(preBlockHash), 1);
     }
 
     @Override
-    public Block createAndAddBlock(Object data, String previousHash){
+    public Block createAndAddBlock(Object data, String previousHash, int height){
 
-        Block block = new Block(1, previousHash, ObjectToByteUtils.toByteArray(data), new Date(), null, 0);
+        Block block = new Block(height, previousHash, ObjectToByteUtils.toByteArray(data), new Date(), null, 0);
         ProofOfWork proofOfWork = ProofOfWork.newProofOfWork(block);
         PowResult result = proofOfWork.run();
         block.setHash(result.hash());
         block.setNonce(result.nonce());
         _blockChain.addBlock(block);
         redisTemplate.opsForValue().set(Constant.Key.LAST, block);
+        redisTemplate.opsForValue().set(block.getHash(), block);
 
         return block;
     }

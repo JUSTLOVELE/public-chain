@@ -14,5 +14,5 @@ public interface BlockService {
      * 添加区块
      * @param data
      */
-    public Block createAndAddBlock(Object data, String previousHash);
+    public Block createAndAddBlock(Object data, String previousHash, int height);
 }

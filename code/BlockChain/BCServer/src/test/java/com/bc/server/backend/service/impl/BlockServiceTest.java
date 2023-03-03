@@ -32,22 +32,19 @@ public class BlockServiceTest {
     @Test
     public void runTest() throws IOException, ClassNotFoundException {
 
-        Block test = (Block) redisTemplate.opsForValue().get(Constant.Key.LAST);
-        System.out.println("");
-//        Object o = ObjectToByteUtils.byteToObject(test.getBytes());
-//
-//        if(o instanceof Block) {
-//            Block block = (Block) o;
-//            System.out.println(block.getHash());
-//        }
+//        Block block1 = (Block) redisTemplate.opsForValue().get(Constant.Key.LAST);
+//        Block block2 = _blockService.createAndAddBlock("block2", block1.getHash(), 2);
+//        Block block3 = _blockService.createAndAddBlock("block3", block2.getHash(), 3);
+//        Block block4 = _blockService.createAndAddBlock("block4", block3.getHash(), 4);
+//        Block block5 = _blockService.createAndAddBlock("block5", block4.getHash(), 5);
     }
 
     @Test
     public void blockTest() {
 
         Block block1 = _blockService.createGenesisBlock("hello world");
-        Block block2 = _blockService.createAndAddBlock("block2", block1.getHash());
-        Block block3 = _blockService.createAndAddBlock("block2", block2.getHash());
+        Block block2 = _blockService.createAndAddBlock("block2", block1.getHash(), 2);
+        Block block3 = _blockService.createAndAddBlock("block2", block2.getHash(), 3);
         System.out.println(_blockChain.toString());
     }
 }
