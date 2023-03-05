@@ -7,12 +7,19 @@ import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
 import com.bc.server.utils.Constant;
 import com.bc.server.utils.ObjectToByteUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,15 +42,37 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     @Autowired
     private BlockChain _blockChain;
 
+    private final static Log _logger = LogFactory.getLog(ApplicationRunnerImpl.class);
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
+        initPkAndSk();
+
         if(redisTemplate.hasKey(Constant.Key.LAST)) {
-            //需要从redis中还原区块链
+            //restore blockchain from redis
             restore();
         }else {
-            //创建创世区块
+            //create genesis block
             _blockService.createGenesisBlock("this is yzl");
+        }
+    }
+
+    /**
+     * set pk、sk
+     */
+    private void initPkAndSk() {
+
+        try {
+
+            File file = new File("../BCServer/src/main/resources");
+            String pkPath = file.getCanonicalPath() + "\\pk.txt";
+            Constant.PK = Files.readString(Paths.get(pkPath));
+            String skPath = file.getCanonicalPath() + "\\sk.txt";
+            Constant.SK = Files.readString(Paths.get(skPath));
+
+        }catch (Exception e) {
+            _logger.error("", e);
         }
     }
 
@@ -54,7 +83,6 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         while(lastBlock != null) {
 
             _blockChain.addBlock(lastBlock);
-            System.out.println(ObjectToByteUtils.byteToObject(lastBlock.getData()));
             Block block = (Block) redisTemplate.opsForValue().get(lastBlock.getPreBlockHash());
             lastBlock = block;
         }

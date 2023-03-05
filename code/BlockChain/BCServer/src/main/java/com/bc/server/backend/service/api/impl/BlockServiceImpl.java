@@ -5,6 +5,7 @@ import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
 import com.bc.server.backend.service.proofofwork.ProofOfWork;
 import com.bc.server.model.PowResult;
+import com.bc.server.transaction.Transaction;
 import com.bc.server.utils.Constant;
 import com.bc.server.utils.ObjectToByteUtils;
 import org.apache.commons.codec.binary.Hex;
@@ -39,13 +40,19 @@ public class BlockServiceImpl implements BlockService {
     public Block createGenesisBlock(Object data) {
 
         byte[] preBlockHash = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        return createAndAddBlock(data, Hex.encodeHexString(preBlockHash), 1);
+        Transaction transaction = new Transaction();
+        transaction.setData(data);
+        transaction.setPk(Constant.PK);
+        Transaction[] transactions = new Transaction[1];
+        transactions[0] = transaction;
+
+        return createAndAddBlock(transactions, Hex.encodeHexString(preBlockHash), 1);
     }
 
     @Override
-    public Block createAndAddBlock(Object data, String previousHash, int height){
+    public Block createAndAddBlock(Transaction[] transactions, String previousHash, int height){
 
-        Block block = new Block(height, previousHash, ObjectToByteUtils.toByteArray(data), new Date(), null, 0);
+        Block block = new Block(height, previousHash, transactions, new Date(), null, 0);
         ProofOfWork proofOfWork = ProofOfWork.newProofOfWork(block);
         PowResult result = proofOfWork.run();
         block.setHash(result.hash());

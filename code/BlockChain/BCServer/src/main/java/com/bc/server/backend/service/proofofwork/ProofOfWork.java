@@ -3,6 +3,7 @@ package com.bc.server.backend.service.proofofwork;
 import com.bc.server.backend.service.block.Block;
 import com.bc.server.model.PowResult;
 import com.bc.server.utils.ByteUtils;
+import com.bc.server.utils.ObjectToByteUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.math.BigInteger;
@@ -26,7 +27,7 @@ public class ProofOfWork {
     private byte[] prepareData(long nonce) {
 
         return ByteUtils.merge(block.getPreBlockHash().getBytes(),
-                block.getData(),
+                ObjectToByteUtils.toByteArray(block.getTransactions()),
                 ByteUtils.toBytes(block.getTimestamp().getTime()),
                 ByteUtils.toBytes(targetBit),
                 ByteUtils.toBytes(nonce));

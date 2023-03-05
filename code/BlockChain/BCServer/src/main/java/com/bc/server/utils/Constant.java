@@ -8,6 +8,10 @@ package com.bc.server.utils;
  */
 public class Constant {
 
+    public static String PK = null;
+
+    public static String SK = null;
+
     public interface Key {
 
         String LAST = "last";

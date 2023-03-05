@@ -4,6 +4,7 @@ import com.bc.server.Main;
 import com.bc.server.backend.service.api.BlockService;
 import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
+import com.bc.server.transaction.Transaction;
 import com.bc.server.utils.Constant;
 import com.bc.server.utils.ObjectToByteUtils;
 import org.junit.Test;
@@ -40,11 +41,22 @@ public class BlockServiceTest {
     }
 
     @Test
-    public void blockTest() {
+    public void firstInit() {
 
-        Block block1 = _blockService.createGenesisBlock("hello world");
-        Block block2 = _blockService.createAndAddBlock("block2", block1.getHash(), 2);
-        Block block3 = _blockService.createAndAddBlock("block2", block2.getHash(), 3);
-        System.out.println(_blockChain.toString());
+        Block block1 = (Block) redisTemplate.opsForValue().get(Constant.Key.LAST);
+        Block block2 = _blockService.createAndAddBlock(getTransactions("block2"), block1.getHash(), 2);
+        Block block3 = _blockService.createAndAddBlock(getTransactions("block3"), block2.getHash(), 3);
+        Block block4 = _blockService.createAndAddBlock(getTransactions("block4"), block3.getHash(), 4);
+        Block block5 = _blockService.createAndAddBlock(getTransactions("block5"), block4.getHash(), 5);
+    }
+
+    private Transaction[] getTransactions(String data) {
+
+        Transaction transaction = new Transaction();
+        transaction.setData(data);
+        transaction.setPk(Constant.PK);
+        Transaction[] transactions = new Transaction[1];
+        transactions[0] = transaction;
+        return transactions;
     }
 }

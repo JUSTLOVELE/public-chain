@@ -1,5 +1,6 @@
 package com.bc.server.backend.service.block;
 
+import com.bc.server.transaction.Transaction;
 import com.bc.server.utils.ObjectToByteUtils;
 
 import java.io.Serializable;
@@ -14,7 +15,8 @@ public class Block implements Serializable {
 
     private String preBlockHash;
 
-    private byte[] Data;
+    //private byte[] Data;
+    private Transaction[] transactions;
 
     private Date timestamp;
 
@@ -26,10 +28,10 @@ public class Block implements Serializable {
 
     }
 
-    public Block(int height, String preBlockHash, byte[] data, Date timestamp, String hash, long nonce) {
+    public Block(int height, String preBlockHash, Transaction[] transactions, Date timestamp, String hash, long nonce) {
         this.height = height;
         this.preBlockHash = preBlockHash;
-        Data = data;
+        this.transactions = transactions;
         this.timestamp = timestamp;
         this.hash = hash;
         this.nonce = nonce;
@@ -59,12 +61,12 @@ public class Block implements Serializable {
         this.height = height;
     }
 
-    public byte[] getData() {
-        return Data;
+    public Transaction[] getTransactions() {
+        return transactions;
     }
 
-    public void setData(byte[] data) {
-        Data = data;
+    public void setTransactions(Transaction[] transactions) {
+        this.transactions = transactions;
     }
 
     public Date getTimestamp() {
@@ -88,7 +90,7 @@ public class Block implements Serializable {
         return "Block{" +
                 "height=" + height +
                 ", preBlockHash='" + preBlockHash + '\'' +
-                ", Data=" + ObjectToByteUtils.byteToObject(getData()) +
+                ", transactions=" + Arrays.toString(transactions) +
                 ", timestamp=" + timestamp +
                 ", hash='" + hash + '\'' +
                 ", nonce=" + nonce +

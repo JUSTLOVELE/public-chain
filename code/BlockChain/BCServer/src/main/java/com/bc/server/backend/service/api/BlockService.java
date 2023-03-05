@@ -1,6 +1,7 @@
 package com.bc.server.backend.service.api;
 
 import com.bc.server.backend.service.block.Block;
+import com.bc.server.transaction.Transaction;
 
 public interface BlockService {
 
@@ -12,7 +13,10 @@ public interface BlockService {
 
     /**
      * 添加区块
-     * @param data
+     * @param transactions
+     * @param previousHash
+     * @param height
+     * @return
      */
-    public Block createAndAddBlock(Object data, String previousHash, int height);
+    public Block createAndAddBlock(Transaction[] transactions, String previousHash, int height);
 }
