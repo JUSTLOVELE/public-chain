@@ -5,9 +5,8 @@ import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
 import com.bc.server.backend.service.proofofwork.ProofOfWork;
 import com.bc.server.model.PowResult;
-import com.bc.server.transaction.Transaction;
+import com.bc.server.backend.service.transaction.Transaction;
 import com.bc.server.utils.Constant;
-import com.bc.server.utils.ObjectToByteUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +50,10 @@ public class BlockServiceImpl implements BlockService {
 
     @Override
     public Block createAndAddBlock(Transaction[] transactions, String previousHash, int height){
+
+        for(Transaction transaction: transactions) {
+            transaction.sign(Constant.SK);
+        }
 
         Block block = new Block(height, previousHash, transactions, new Date(), null, 0);
         ProofOfWork proofOfWork = ProofOfWork.newProofOfWork(block);

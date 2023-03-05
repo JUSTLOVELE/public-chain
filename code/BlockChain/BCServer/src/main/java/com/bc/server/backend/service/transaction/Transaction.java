@@ -1,20 +1,24 @@
 package com.bc.server.backend.service.transaction;
 
-public class Transaction {
+import com.bc.server.utils.ObjectToByteUtils;
+import com.bc.server.utils.RSA;
 
-    private String signature;
+import java.io.Serializable;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
+
+public class Transaction implements Serializable {
+
+    private static final long serialVersionUID = -2718643841231352368L;
 
     private String pk;
 
-    private Object[] objs;
+    private byte[] signature;
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
+    private Object data;
 
     public String getPk() {
         return pk;
@@ -24,11 +28,44 @@ public class Transaction {
         this.pk = pk;
     }
 
-    public Object[] getObjs() {
-        return objs;
+    public byte[] getSignature() {
+        return signature;
     }
 
-    public void setObjs(Object[] objs) {
-        this.objs = objs;
+    public void setSignature(byte[] signature) {
+        this.signature = signature;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public void sign(String privateKey) {
+
+        try{
+
+            PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+            PrivateKey priKey = KeyFactory.getInstance("RSA").generatePrivate(priPKCS8);
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(priKey);
+            signature.update(ObjectToByteUtils.toByteArray(this.data));
+            this.signature = signature.sign();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "pk='" + pk + '\'' +
+                ", signature='" + signature + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

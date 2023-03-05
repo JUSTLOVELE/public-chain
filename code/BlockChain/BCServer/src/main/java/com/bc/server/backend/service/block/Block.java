@@ -1,7 +1,6 @@
 package com.bc.server.backend.service.block;
 
-import com.bc.server.transaction.Transaction;
-import com.bc.server.utils.ObjectToByteUtils;
+import com.bc.server.backend.service.transaction.Transaction;
 
 import java.io.Serializable;
 import java.util.Arrays;

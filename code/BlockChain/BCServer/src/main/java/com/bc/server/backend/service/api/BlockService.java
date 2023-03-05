@@ -1,7 +1,7 @@
 package com.bc.server.backend.service.api;
 
 import com.bc.server.backend.service.block.Block;
-import com.bc.server.transaction.Transaction;
+import com.bc.server.backend.service.transaction.Transaction;
 
 public interface BlockService {
 

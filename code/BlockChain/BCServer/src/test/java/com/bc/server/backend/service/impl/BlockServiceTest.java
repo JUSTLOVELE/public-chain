@@ -4,14 +4,12 @@ import com.bc.server.Main;
 import com.bc.server.backend.service.api.BlockService;
 import com.bc.server.backend.service.block.Block;
 import com.bc.server.backend.service.block.BlockChain;
-import com.bc.server.transaction.Transaction;
+import com.bc.server.backend.service.transaction.Transaction;
 import com.bc.server.utils.Constant;
-import com.bc.server.utils.ObjectToByteUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
