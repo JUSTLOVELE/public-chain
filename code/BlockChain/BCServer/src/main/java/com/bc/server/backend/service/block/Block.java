@@ -1,6 +1,8 @@
 package com.bc.server.backend.service.block;
 
 import com.bc.server.backend.service.transaction.Transaction;
+import com.bc.server.utils.SerializeUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -83,6 +85,14 @@ public class Block implements Serializable {
     public void setNonce(long nonce) {
         this.nonce = nonce;
     }
+
+//    public byte[] hashTransaction() {
+//        byte[][] txIdArrays = new byte[this.getTransactions().length][];
+//        for (int i = 0; i < this.getTransactions().length; i++) {
+//            txIdArrays[i] = this.getTransactions()[i].hash();
+//        }
+//        return new MerkleTree(txIdArrays).getRoot().getHash();
+//    }
 
     @Override
     public String toString() {

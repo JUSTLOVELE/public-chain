@@ -2,6 +2,8 @@ package com.bc.server.backend.service.transaction;
 
 import com.bc.server.utils.ObjectToByteUtils;
 import com.bc.server.utils.RSA;
+import com.bc.server.utils.SerializeUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.Serializable;
 import java.security.KeyFactory;
@@ -42,6 +44,18 @@ public class Transaction implements Serializable {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    /**
+     * 计算交易信息的Hash值
+     *
+     * @return
+     */
+    public byte[] hash() {
+        // 使用序列化的方式对Transaction对象进行深度复制
+        byte[] serializeBytes = SerializeUtils.serialize(this);
+        Transaction copyTx = (Transaction) SerializeUtils.deserialize(serializeBytes);
+        return DigestUtils.sha256(SerializeUtils.serialize(copyTx));
     }
 
     public void sign(String privateKey) {
